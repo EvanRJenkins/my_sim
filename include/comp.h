@@ -1,0 +1,4 @@
+/*
+Structs for circuits components
+*/
+
