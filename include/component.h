@@ -27,18 +27,18 @@ typedef struct Component {
     E_CompType Type;
     // Varying value
     union TypeValue Value;
-} comp_t;
+} Component_t;
 
 /*
-Functions for manipulating comp_t
+Functions for manipulating Component_t
 */
 
 // Allocate memory for new Component struct
-comp_t *COMP_New();
+Component_t *COMP_New();
 
 // Initialize a component based on desired CompType
-void COMP_InitVSOURCE(comp_t * target, float (*SourceFunction)(float));
-void COMP_InitISOURCE(comp_t * target, float (*SourceFunction)(float));
-void COMP_InitRESISTOR(comp_t * target, float resistance);
-void COMP_InitCAPACITOR(comp_t * target, float capacitance);
-void COMP_InitINDUCTOR(comp_t * target, float inductance);
+void COMP_InitVSOURCE(Component_t * target, float (*SourceFunction)(float));
+void COMP_InitISOURCE(Component_t * target, float (*SourceFunction)(float));
+void COMP_InitRESISTOR(Component_t * target, float resistance);
+void COMP_InitCAPACITOR(Component_t * target, float capacitance);
+void COMP_InitINDUCTOR(Component_t * target, float inductance);
