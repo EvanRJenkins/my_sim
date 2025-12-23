@@ -5,10 +5,10 @@ int main(void) {
     float *test2 = IMAG_New();
     IMAG_Init(test1, 2, 2);
     IMAG_Init(test2, 2, 2);
-    float *product = IMAG_Mult(test1, test2);
+    float *quotient = IMAG_Div(test1, test2);
     free(test1);
     free(test2);
-    printf("Result: %f  %fj\n", product[0], product[1]);
-    free(product);
+    printf("Result: %f  %fj\n", quotient[0], quotient[1]);
+    free(quotient);
     return 0;
 }

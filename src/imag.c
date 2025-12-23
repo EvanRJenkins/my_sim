@@ -2,7 +2,6 @@
 #include <math.h>     // For math
 #include <stdio.h>    // For print
 #include <stdlib.h>   // For malloc/free
-#include <stdbool.h>  // For optional flags
 #include <stdint.h>
 // Create array for new imag_t
 float *IMAG_New() {
@@ -55,4 +54,15 @@ float *IMAG_Mult(float * target1, float * target2) {
 }
 
 // Divide two complex numbers and return result
-float *IMAG_Div(float * target1, float * target2);
+float *IMAG_Div(float * target1, float * target2) {
+    // Multply numerator and denom by denom conjugate
+    float *conjugate = IMAG_Conjugate(target2);
+    // Numerator * Denominator complex conjugate
+    float *numerator = IMAG_Mult(target1, conjugate);
+    free(conjugate);
+    // Denominator is a^2 + b^2
+    float denominator = target2[0]*target2[0] + target2[1]*target2[1];
+    numerator[0] /= denominator;
+    numerator[1] /= denominator;
+    return numerator;
+}
