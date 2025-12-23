@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "imaginarymath.h"
-#include "components.h"
+#include "component.h"
 
 float ConstantSource(float x) {
     return x;

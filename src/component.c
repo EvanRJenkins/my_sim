@@ -1,6 +1,6 @@
 #include <stdlib.h> // For malloc/free
 #include "imaginarymath.h"
-#include "components.h"
+#include "component.h"
 /*
 Structs for circuits components
 */
