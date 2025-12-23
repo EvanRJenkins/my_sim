@@ -5,8 +5,6 @@ Complex number type definition and math functions
 #include <stdlib.h> // For malloc/free
 #include <stdio.h>
 #include <stdint.h>
-#define FREE 1
-#define KEEP 0
 #define REAL(x) x[0]
 #define IMAG(x) x[1]
 

@@ -12,14 +12,14 @@ float *IMAG_New() {
 }
 // Initialize coefficients of target complex number
 void IMAG_Init(float * target, float a, float b) {
-    target[0] = a;
-    target[1] = b;
+    REAL(target) = a;
+    IMAG(target) = b;
 }
 
 // Return complex conjugate of imag_t
 float *IMAG_Conjugate(float * target) {
-    float new_a = target[0];
-    float new_b = -target[1];
+    float new_a = REAL(target);
+    float new_b = -IMAG(target);
     float *result = IMAG_New();
     IMAG_Init(result, new_a, new_b);
     return result;
@@ -27,8 +27,8 @@ float *IMAG_Conjugate(float * target) {
 
 // Add two complex numbers and return result
 float *IMAG_Add(float * target1, float * target2) {
-    float new_a = target1[0] + target2[0];
-    float new_b = target1[1] + target2[1];
+    float new_a = REAL(target1) + REAL(target2);
+    float new_b = IMAG(target1) + IMAG(target2);
     float *result = IMAG_New();
     IMAG_Init(result, new_a, new_b);
     return result;
@@ -36,8 +36,8 @@ float *IMAG_Add(float * target1, float * target2) {
 
 // Subtract two complex numbers and return result
 float *IMAG_Sub(float * target1, float * target2) {
-    float new_a = target1[0] - target2[0];
-    float new_b = target1[1] - target2[1];
+    float new_a = REAL(target1) - REAL(target2);
+    float new_b = IMAG(target1) - IMAG(target2);
     float *result = IMAG_New();
     IMAG_Init(result, new_a, new_b);
     return result;
@@ -46,7 +46,7 @@ float *IMAG_Sub(float * target1, float * target2) {
 // Multiply two complex numbers and return result
 float *IMAG_Mult(float * target1, float * target2) {
     // Real * real + -(imag * imag) because j * j = -1
-    float new_a = (target1[0] * target2[0]) - (target1[1] * target2[1]);
+    float new_a = (REAL(target1) * REAL(target2)) - (IMAG(target1) * IMAG(target2));
     float new_b = (target1[1] * target2[0]) + (target1[0] * target2[1]);
     float *result = IMAG_New();
     IMAG_Init(result, new_a, new_b);
