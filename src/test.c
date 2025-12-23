@@ -4,19 +4,11 @@
 
 
 int main(void) {
-    Component_t *Comp1 = COMP_New();
-    COMP_InitRESISTOR(Comp1, 1000.0f);
-    Component_t *Comp2 = COMP_New();
-    COMP_InitCAPACITOR(Comp2, 47.0E-6f);
-    Component_t *Comp3 = COMP_New();
-    COMP_InitINDUCTOR(Comp3, 100.0E-3f);
-    g_NodeLabelIndex = 7;
-    Node_t *Node1 = CIRCUIT_NewNode(Comp1, Comp2, Comp3);
-    printf("Node1 Label: %c", Node1->Label);
+    Component_t *Comp1 = COMP_New(NULL, 47.0e-6f, CAPACITOR);
+    Node_t *Node1 = CIRCUIT_NewNode(Comp1, NULL, NULL);
+    printf("Node1 Label: %c, Impedance: %f %fj\n", Node1->Label, Comp1->Value.Z[0], Comp1->Value.Z[1]);
     free(Comp1);
-    free(Comp2);
-    free(Comp3);
-
+    free(Node1);
     return 0;
 }
 

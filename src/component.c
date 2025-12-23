@@ -1,52 +1,63 @@
 #include <stdlib.h> // For malloc/free
+#include <stdio.h>  // For error printing
 #include "imaginarymath.h"
 #include "component.h"
-/*
-Structs for circuits components
-*/
-
-/*
-Functions for manipulating Component_t
-*/
 
 // Allocate memory for new Component struct
-Component_t *COMP_New() {
-    return (Component_t *) malloc(sizeof(Component_t));
+// Allocate memory for new Component and initialize
+/*
+To make a passive component, pass NULL, passive value,
+and RESISTOR, CAPACITOR, or INDUCTOR.
+
+To make an active component, pass the component function,
+a float literal to passive_val, and ACTIVE.
+*/
+Component_t *COMP_New(float (*func_ptr)(void), float passive_val, 
+                      E_CompType comp_type) {
+    // Error if no active component function and active selected
+    if ((func_ptr == NULL) && (comp_type == ACTIVE)) {
+        printf("Error: Specified component type is active, but no function was provided. Program terminated.\n");
+        exit(EXIT_FAILURE);
+        return NULL;
+    }
+    // Error if passive component specified but no value giver
+    else if ((passive_val == 0.0f) && (comp_type != ACTIVE)) {
+        printf("Error: Specified component type is passive, but no nominal value was provided. Program terminated.\n");
+        exit(EXIT_FAILURE);
+        return NULL;
+    }
+    else {
+        // Allocate space for new component
+        Component_t *result = (Component_t *) malloc(sizeof(Component_t));
+        result->Type = comp_type;
+        switch (comp_type) {
+            case ACTIVE:
+                // Copy func_ptr to component's active function
+                result->Value.ActiveFunction = func_ptr;
+                break;
+            case RESISTOR:
+                // passive_val goes to a (real_part)
+                result->Value.Z[0] = passive_val;
+                result->Value.Z[1] = 0.0f;
+                break;
+            case CAPACITOR:
+                // passive_val goes to imaginary part (1/jwC)
+                result->Value.Z[0] = 0.0f;
+                if (ANGULAR_FREQUENCY == 0.0f) {
+                    result->Value.Z[1] = 0.0f;   
+                }
+                else {
+                    result->Value.Z[1] = 1.0f / (ANGULAR_FREQUENCY * passive_val);
+                }
+                break;
+            default:
+                printf("Error: Default case reached. Program terminated.\n");
+                exit(EXIT_FAILURE);
+                return NULL;
+                break;
+        }
+    // Return initialized component struct pointer 
+    return result;
+    }
 }
 
-// Initialize a component based on desired CompType
-void COMP_InitVSOURCE(Component_t * target, float (*SourceFunction)(float)) {
-    // Specify component type
-    target->Type = VSOURCE;
-    // Assign source function
-    target->Value.SourceFunction = SourceFunction;
-}
-void COMP_InitISOURCE(Component_t * target, float (*SourceFunction)(float)) {
-    // Specify component type
-    target->Type = ISOURCE;
-    // Assign source function
-    target->Value.SourceFunction = SourceFunction;
-}
-void COMP_InitRESISTOR(Component_t * target, float resistance) {
-    // Specify component type
-    target->Type = RESISTOR;
-    // Assign impedance
-    target->Value.Z[0] = resistance;
-    target->Value.Z[1] = 0.0f;
-}
-void COMP_InitCAPACITOR(Component_t * target, float capacitance) {
-    // Specify component type
-    target->Type = CAPACITOR;
-    // Calculate and assign impedance
-    float b = 1.0f / (ANGULAR_FREQUENCY * capacitance);
-    target->Value.Z[0] = 0.0f;
-    target->Value.Z[1] = b;
-}
-void COMP_InitINDUCTOR(Component_t * target, float inductance) {
-    // Specify component type
-    target->Type = INDUCTOR;
-    // Calculate and assign impedance
-    float b = ANGULAR_FREQUENCY * inductance;
-    target->Value.Z[0] = 0.0f;
-    target->Value.Z[1] = b;
-}

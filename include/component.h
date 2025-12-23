@@ -7,9 +7,8 @@
 /*
 Structs for circuits components
 */
-typedef enum {
-    VSOURCE, 
-    ISOURCE, 
+typedef enum { 
+    ACTIVE,
     RESISTOR, 
     CAPACITOR, 
     INDUCTOR
@@ -17,7 +16,7 @@ typedef enum {
 // For changing component value with type
 union TypeValue {
     // Source unction pointer
-    float (*SourceFunction)(float);
+    float (*ActiveFunction)(void);
     // Impedance
     float Z[2];
 };
@@ -33,12 +32,14 @@ typedef struct Component {
 Functions for manipulating Component_t
 */
 
-// Allocate memory for new Component struct
-Component_t *COMP_New();
+// Allocate memory for new Component and initialize
+/*
+To make a passive component, pass NULL, passive value,
+and RESISTOR, CAPACITOR, or INDUCTOR.
 
-// Initialize a component based on desired CompType
-void COMP_InitVSOURCE(Component_t * target, float (*SourceFunction)(float));
-void COMP_InitISOURCE(Component_t * target, float (*SourceFunction)(float));
-void COMP_InitRESISTOR(Component_t * target, float resistance);
-void COMP_InitCAPACITOR(Component_t * target, float capacitance);
-void COMP_InitINDUCTOR(Component_t * target, float inductance);
+To make an active component, pass the component function,
+a float literal to passive_val, and ACTIVE.
+*/
+Component_t *COMP_New(float (*func_ptr)(void), float passive_val, 
+                      E_CompType comp_type);
+
