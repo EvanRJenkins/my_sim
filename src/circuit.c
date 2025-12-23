@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "circuit.h"
 // Array to track node labels in use
-char NodeLabels[8] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', '\0'};
+char NodeLabels[8] = {'A', 'B', 'C', 'D', 'E', 'F', 'G'};
 #define MAX_NUM_NODES (sizeof(NodeLabels)/sizeof(NodeLabels[0])) - 1
 uint8_t g_NodeLabelIndex = 0;
 // Allocate memory for new node and initialize connections
