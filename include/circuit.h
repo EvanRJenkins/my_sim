@@ -2,8 +2,10 @@
 This file provides circuit structure elements such as wires and ground
 */
 #include <stdlib.h>
+#include <stdint.h>
 #include "component.h"
-// Wire type
+// External global node label index variable
+extern uint8_t g_NodeLabelIndex;
 // Holds pointers to connected components
 typedef struct Node {
     char Label;
