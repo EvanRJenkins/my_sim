@@ -1,5 +1,6 @@
-#include "imag.h"
-#include "comp.h"
+#include <stdio.h>
+#include "imaginarymath.h"
+#include "components.h"
 
 float ConstantSource(float x) {
     return x;

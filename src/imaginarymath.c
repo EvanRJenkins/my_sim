@@ -1,8 +1,5 @@
-#include "imag.h"
-#include <math.h>     // For math
-#include <stdio.h>    // For print
 #include <stdlib.h>   // For malloc/free
-#include <stdint.h>
+#include "imaginarymath.h"
 // Create array for new imag_t
 float *IMAG_New() {
     // Allocate 2 element array

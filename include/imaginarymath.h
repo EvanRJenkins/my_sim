@@ -1,9 +1,7 @@
 /*
 Complex number type definition and math functions
 */
-#include <math.h>   // For math
 #include <stdlib.h> // For malloc/free
-#include <stdio.h>
 #include <stdint.h>
 #define REAL(x) x[0]
 #define IMAG(x) x[1]

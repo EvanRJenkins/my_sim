@@ -1,9 +1,6 @@
-#include <math.h>   // For math
 #include <stdlib.h> // For malloc/free
-#include <stdio.h>
-#include <stdint.h>
-#include "imag.h"
-#include "comp.h"
+#include "imaginarymath.h"
+#include "components.h"
 /*
 Structs for circuits components
 */

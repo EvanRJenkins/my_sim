@@ -1,7 +1,7 @@
 CC = gcc
 LDLIBS = -lm -lraylib
 CFLAGS = -Iinclude -Wall -Wextra
-SRCS = src/imag.c src/comp.c src/test.c
+SRCS = src/imaginarymath.c src/components.c src/test.c
 TARGET = test_my_sim
 
 all: $(TARGET)

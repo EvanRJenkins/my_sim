@@ -1,8 +1,5 @@
-#include <math.h>   // For math
 #include <stdlib.h> // For malloc/free
-#include <stdio.h>
-#include <stdint.h>
-#include "imag.h"
+#include "imaginarymath.h"
 // For functions to work if not defined
 #ifndef ANGULAR_FREQUENCY
     #define ANGULAR_FREQUENCY 1.0f
