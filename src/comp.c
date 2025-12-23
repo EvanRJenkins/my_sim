@@ -30,12 +30,12 @@ void COMP_InitISOURCE(comp_t * target, float (*SourceFunction)(float)) {
     // Assign source function
     target->Value.SourceFunction = SourceFunction;
 }
-void COMP_InitRESISTOR(comp_t * target, float * imag_impedance) {
+void COMP_InitRESISTOR(comp_t * target, float resistance) {
     // Specify component type
     target->Type = RESISTOR;
     // Assign impedance
-    target->Value.Z[0] = REAL(imag_impedance);
-    target->Value.Z[1] = IMAG(imag_impedance);
+    target->Value.Z[0] = resistance;
+    target->Value.Z[1] = 0.0f;
 }
 void COMP_InitCAPACITOR(comp_t * target, float capacitance) {
     // Specify component type
@@ -49,7 +49,7 @@ void COMP_InitINDUCTOR(comp_t * target, float inductance) {
     // Specify component type
     target->Type = INDUCTOR;
     // Calculate and assign impedance
-    float b = 1.0f / (ANGULAR_FREQUENCY * inductance);
+    float b = ANGULAR_FREQUENCY * inductance;
     target->Value.Z[0] = 0.0f;
     target->Value.Z[1] = b;
 }
