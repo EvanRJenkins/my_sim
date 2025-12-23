@@ -47,7 +47,7 @@ float *IMAG_Sub(float * target1, float * target2) {
 float *IMAG_Mult(float * target1, float * target2) {
     // Real * real + -(imag * imag) because j * j = -1
     float new_a = (REAL(target1) * REAL(target2)) - (IMAG(target1) * IMAG(target2));
-    float new_b = (target1[1] * target2[0]) + (target1[0] * target2[1]);
+    float new_b = (IMAG(target1) * REAL(target2)) + (REAL(target1) * IMAG(target2));
     float *result = IMAG_New();
     IMAG_Init(result, new_a, new_b);
     return result;
@@ -61,8 +61,8 @@ float *IMAG_Div(float * target1, float * target2) {
     float *numerator = IMAG_Mult(target1, conjugate);
     free(conjugate);
     // Denominator is a^2 + b^2
-    float denominator = target2[0]*target2[0] + target2[1]*target2[1];
-    numerator[0] /= denominator;
-    numerator[1] /= denominator;
+    float denominator = REAL(target2)*REAL(target2) + IMAG(target2)*IMAG(target2);
+    REAL(numerator) /= denominator;
+    IMAG(numerator) /= denominator;
     return numerator;
 }
