@@ -47,8 +47,12 @@ Component_t *COMP_New(float (*func_ptr)(void), float passive_val,
                     result->Value.Z[1] = 0.0f;   
                 }
                 else {
-                    result->Value.Z[1] = 1.0f / (ANGULAR_FREQUENCY * passive_val);
+                    result->Value.Z[1] = (float) (1.0f / (ANGULAR_FREQUENCY * passive_val));
                 }
+                break;
+            case INDUCTOR:
+                result->Value.Z[0] = 0.0f;
+                result->Value.Z[1] = (float) (ANGULAR_FREQUENCY * passive_val);
                 break;
             default:
                 printf("Error: Default case reached. Program terminated.\n");
