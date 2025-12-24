@@ -1,0 +1,26 @@
+MSNL is an acronym that stands for my_sim netlist
+
+
+The currently supported component types are:
+    ACTIVE,
+    RESISTOR, 
+    CAPACITOR, 
+    INDUCTOR
+
+All nominal values must be specified in floating point format.
+Examples:
+	10Ohm  ->  100.0f
+	47uF   ->  47.0e-6f
+	100mH  ->  100.0e-3f
+Units are determined automatically by the specified component type.
+Any units given in a .msnl file will result in an error.
+
+Each line of a .msnl file describes an individual component.
+The proper way to describe an active component is, for example:
+	V1 ACTIVE SIN(5, 100) A GROUND
+Below is a syntactically INCORRECT but more clear description:
+	Label: V1 Type: ACTIVE Value: SIN(Amplitude: 5, AngularFrequency: 100) Positive Node: A Negative Node: GROUND
+Here is an equivalent example for a passive component:
+	R1 PASSIVE 100.0f A GROUND
+	Label: R1 Type: PASSIVE Value: 100.0f PositiveNode: A NegativeNodeL GROUND
+	
