@@ -16,8 +16,10 @@ typedef struct Line {
     char Data[MAX_LINE_LENGTH];
 } Line_t;
 // Globals to track line index
-extern unsigned int g_LineIndex;
 extern Component_t *g_ComponentList;
+extern Node_t *g_NodeList;
+extern unsigned int g_NumberOfNodes;
+extern unsigned int g_LineIndex;
 
 // Max number of chars in component label before '\0'
 #ifndef MAX_LABEL_LENGTH

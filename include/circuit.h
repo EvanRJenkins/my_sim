@@ -1,3 +1,5 @@
+#ifndef CIRCUIT_H
+#define CIRCUIT_H
 /*
 This file provides circuit structure elements such as wires and ground
 */
@@ -67,3 +69,4 @@ typedef struct Node {
 // Allocate memory for new node and initialize connections
 Node_t *CIRCUIT_NewNode(Component_t *target1, 
                         Component_t *target2, Component_t *target3);
+#endif // Header define

@@ -1,3 +1,5 @@
+#ifndef IMAGINARYMATH_H
+#define IMAGINARYMATH_H
 /*
 Complex number type definition and math functions
 */
@@ -27,3 +29,5 @@ float *IMAG_Mult(float * target1, float * target2);
 
 // Divide two complex numbers and return result
 float *IMAG_Div(float * target1, float * target2);
+
+#endif // Header define
