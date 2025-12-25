@@ -3,6 +3,7 @@
 int main(void) {
     Line_t *Lines = MSNL_ReadFile("test.txt");
     MSNL_MakeComponentList();
+    MSNL_MakeNodeList();
     unsigned int i = 0;
     for (i = 0; i < g_LineIndex; i++) {
         printf("%s", Lines[i].Data);

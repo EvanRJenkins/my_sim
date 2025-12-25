@@ -39,9 +39,23 @@ Line_t *MSNL_ReadFile(const char *file_name_string) {
 void MSNL_MakeComponentList() { 
     g_ComponentList = (Component_t *) malloc(sizeof(Component_t) * g_LineIndex);
 }
+
 // Make list of all nodes in circuit
 void MSNL_MakeNodeList() {
-    g_NodeList = (Node_t *) malloc(sizeof(Node_t) * g_NumberOfNodes);
+    // Temporary solution, 2x nodes per component should be more than enough
+    g_NodeList = (Node_t *) malloc(sizeof(Node_t) * g_LineIndex * 2);
+}
+unsigned char MSNL_IsRepeatNode(char * node_label_string) {
+    unsigned char i;
+    // Iterate until a repeat is found
+    for (i = 0; i < (sizeof(g_NodeList) / sizeof(g_NodeList[i])); i++) {
+        // Compare argument string to Label at current index
+        if strcomp(g_NodeList[i], node_label_string) {
+            return 1;
+        }
+    }
+    // If no repeat, return 0
+    return 0;
 }
 
 // Parse lines
@@ -139,7 +153,13 @@ void MSNL_ParseLine(char *target_line) {
         exit(EXIT_FAILURE);
     }
     strncpy(g_ComponentList[g_LineIndex].PosNode, token, sizeof(g_ComponentList[g_LineIndex].PosNode) - 1);
-
+    // If node isn't a repeat, add it to the NodeList
+    if (!MSNL_IsRepeatNode(token)) {
+        // Add to list
+        strncpy(g_NodeList[g_NodeListIndex].Label, token, sizeof(g_ComponentList[g_NodeListIndex].Label) - 1);
+        // Increment index
+        g_NodeListIndex++
+    }
     // Parse Negative Node
     token = strtok(NULL, delimiters);
     if (!token) {
@@ -147,5 +167,11 @@ void MSNL_ParseLine(char *target_line) {
         exit(EXIT_FAILURE);
     }    
     strncpy(g_ComponentList[g_LineIndex].NegNode, token, sizeof(g_ComponentList[g_LineIndex].NegNode) - 1);
+    if (!MSNL_IsRepeatNode(token)) {
+        // Add to list
+        strncpy(g_NodeList[g_NodeListIndex].Label, token, sizeof(g_ComponentList[g_NodeListIndex].Label) - 1);
+        // Increment index
+        g_NodeListIndex++
+    }
 }
 
