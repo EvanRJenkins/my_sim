@@ -1,9 +1,11 @@
 #include "msnlparser.h"
 #include "functiontable.h"
+// Declared extern in .h
 // Array of all components in circuit
 Component_t *g_ComponentList = NULL;
-// Declared extern in .h
-unsigned int g_LineIndex;
+Node_t *g_NodeList = NULL;
+unsigned int g_NumberOfNodes = 0;
+unsigned int g_LineIndex = 0;
 // Open file and read it, return ptr to Lines array
 Line_t *MSNL_ReadFile(const char *file_name_string) {
     // Open the file in read mode
@@ -37,7 +39,12 @@ Line_t *MSNL_ReadFile(const char *file_name_string) {
 void MSNL_MakeComponentList() { 
     g_ComponentList = (Component_t *) malloc(sizeof(Component_t) * g_LineIndex);
 }
-    // Parse lines
+// Make list of all nodes in circuit
+void MSNL_MakeNodeList() {
+    g_NodeList = (Node_t *) malloc(sizeof(Node_t) * g_NumberOfNodes);
+}
+
+// Parse lines
 void MSNL_ParseLine(char *target_line) {
     char *token;
     // Delimiters specified by MSNL format
@@ -125,16 +132,20 @@ void MSNL_ParseLine(char *target_line) {
             exit(EXIT_FAILURE);
         }
     }
-/*
     // Parse Positive Node
     token = strtok(NULL, delimiters);
-    if (!token) return -1;
-    strncpy(g_ComponentList[g_LineIndex].NodePos, token, sizeof(g_ComponentList[g_LineIndex].NodePos) - 1);
+    if (!token) {
+        printf("Failure, terminating program.\n");
+        exit(EXIT_FAILURE);
+    }
+    strncpy(g_ComponentList[g_LineIndex].PosNode, token, sizeof(g_ComponentList[g_LineIndex].PosNode) - 1);
 
-    // 5. Parse Negative Node
+    // Parse Negative Node
     token = strtok(NULL, delimiters);
-    if (!token) return -1;
-    strncpy(g_ComponentList[g_LineIndex].NodeNeg, token, sizeof(g_ComponentList[g_LineIndex].NodeNeg) - 1);
-*/
+    if (!token) {
+        printf("Failure, terminating program.\n");
+        exit(EXIT_FAILURE);
+    }    
+    strncpy(g_ComponentList[g_LineIndex].NegNode, token, sizeof(g_ComponentList[g_LineIndex].NegNode) - 1);
 }
 

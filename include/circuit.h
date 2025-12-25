@@ -8,6 +8,7 @@ This file provides circuit structure elements such as wires and ground
     #define ANGULAR_FREQUENCY 1.0f
 #endif
 #define MAX_NUM_PARAMS 2
+#define MAX_NODE_LABEL_LENGTH 10
 /*
 Structs for circuits components
 */
@@ -36,6 +37,9 @@ typedef struct Component {
     E_CompType Type;
     // Varying value
     union TypeValue Value;
+    // Connected nodes
+    char PosNode[MAX_NODE_LABEL_LENGTH + 1];
+    char NegNode[MAX_NODE_LABEL_LENGTH + 1];
 } Component_t;
 
 /*
