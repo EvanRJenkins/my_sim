@@ -1,7 +1,7 @@
 #include "msnlparser.h"
 #include "functiontable.h"
 // Array of all components in circuit
-Component_t *ComponentList;
+Component_t *ComponentList = NULL;
 // Declared extern in .h
 unsigned int g_LineIndex;
 // Open file and read it, return ptr to Lines array
@@ -32,9 +32,8 @@ Line_t *MSNL_ReadFile(const char *file_name_string) {
     return result;
 }
 // Make list of all components in circuit
-Component_t *MSNL_MakeComponentList() {
-    Component_t *result = (Component_t *) malloc(sizeof(Component_t) * g_LineIndex);
-    return result;
+void MSNL_MakeComponentList() { 
+    ComponentList = (Component_t *) malloc(sizeof(Component_t) * g_LineIndex);
 }
     // Parse lines
 void MSNL_ParseLine(char *target_line) {

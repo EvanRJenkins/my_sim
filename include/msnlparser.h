@@ -18,7 +18,6 @@ typedef struct Line {
 // Globals to track line index
 extern unsigned int g_LineIndex;
 
-
 // Max number of chars in component label before '\0'
 #ifndef MAX_LABEL_LENGTH
     #define MAX_LABEL_LENGTH 2
@@ -27,9 +26,9 @@ extern unsigned int g_LineIndex;
 // Open file and read it
 Line_t *MSNL_ReadFile(const char *file_name_string);
 // Allocate memory for global component list
-Component_t *MSNL_MakeComponentList();
+void MSNL_MakeComponentList();
 // Make component from line description
-void *MSNL_ParseLine(char *target_line);
+void MSNL_ParseLine(char *target_line);
 /*
 SAMPLE COMPONENT DESCRIPTION LINE IN MSNL FORMAT
 
