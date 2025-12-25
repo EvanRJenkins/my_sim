@@ -3,8 +3,22 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "circuit.h"
-#include "line.h"
+/*
+Line type and definitions
+*/
+#ifndef MAX_LINE_LENGTH
+    #define MAX_LINE_LENGTH 100
+#endif
+// Line struct type
+typedef struct Line {
+    char Data[MAX_LINE_LENGTH];
+} Line_t;
+// Globals to track line index
+extern unsigned int g_LineIndex;
+
+
 // Max number of chars in component label before '\0'
 #ifndef MAX_LABEL_LENGTH
     #define MAX_LABEL_LENGTH 2
@@ -15,7 +29,7 @@ Line_t *MSNL_ReadFile(const char *file_name_string);
 // Allocate memory for global component list
 Component_t *MSNL_MakeComponentList();
 // Make component from line description
-Component_t *MSNL_GetComponent(Line_t * target);
+void *MSNL_ParseLine(char *target_line);
 /*
 SAMPLE COMPONENT DESCRIPTION LINE IN MSNL FORMAT
 

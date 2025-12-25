@@ -6,7 +6,13 @@ int main(void) {
     for (i = 0; i < g_LineIndex; i++) {
         printf("%s", Lines[i].Data);
     }
+    MSNL_ParseLine(Lines[0]);
     free(Lines);
+    
+    
+    
+    
+    
     printf("Complete");
     return 0;
 }

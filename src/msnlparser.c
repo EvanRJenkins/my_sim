@@ -1,7 +1,9 @@
 #include "msnlparser.h"
 #include "functiontable.h"
+// Array of all components in circuit
 Component_t *ComponentList;
-
+// Declared extern in .h
+unsigned int g_LineIndex;
 // Open file and read it, return ptr to Lines array
 Line_t *MSNL_ReadFile(const char *file_name_string) {
     // Open the file in read mode
