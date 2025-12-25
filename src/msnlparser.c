@@ -1,7 +1,7 @@
 #include "msnlparser.h"
 #include "functiontable.h"
 // Array of all components in circuit
-Component_t *ComponentList = NULL;
+Component_t *g_ComponentList = NULL;
 // Declared extern in .h
 unsigned int g_LineIndex;
 // Open file and read it, return ptr to Lines array
@@ -27,13 +27,15 @@ Line_t *MSNL_ReadFile(const char *file_name_string) {
         // Access the array at index [count], then the .Data member
         fgets(result[count].Data, MAX_LINE_LENGTH, fptr);
     }
+    // Reset g_LineIndex
+    g_LineIndex = 0;
     // Close the file
     fclose(fptr);
     return result;
 }
 // Make list of all components in circuit
 void MSNL_MakeComponentList() { 
-    ComponentList = (Component_t *) malloc(sizeof(Component_t) * g_LineIndex);
+    g_ComponentList = (Component_t *) malloc(sizeof(Component_t) * g_LineIndex);
 }
     // Parse lines
 void MSNL_ParseLine(char *target_line) {
@@ -51,17 +53,17 @@ void MSNL_ParseLine(char *target_line) {
          exit(EXIT_FAILURE);
     }
 
-    strncpy(ComponentList[g_LineIndex].Label, token, sizeof(ComponentList[g_LineIndex].Label) - 1);
+    strncpy(g_ComponentList[g_LineIndex].Label, token, sizeof(g_ComponentList[g_LineIndex].Label) - 1);
     // Get Type ("ACTIVE", "RESISTOR", ...)
     token = strtok(NULL, delimiters);
     if (!token) {
         printf("Failure, terminating program.\n");
         exit(EXIT_FAILURE);
     }
-    if (strcmp(token, "ACTIVE") == 0)         ComponentList[g_LineIndex].Type = ACTIVE;
-    else if (strcmp(token, "RESISTOR") == 0)  ComponentList[g_LineIndex].Type = RESISTOR;
-    else if (strcmp(token, "CAPACITOR") == 0) ComponentList[g_LineIndex].Type = CAPACITOR;
-    else if (strcmp(token, "INDUCTOR") == 0)  ComponentList[g_LineIndex].Type = INDUCTOR;
+    if (strcmp(token, "ACTIVE") == 0)         g_ComponentList[g_LineIndex].Type = ACTIVE;
+    else if (strcmp(token, "RESISTOR") == 0)  g_ComponentList[g_LineIndex].Type = RESISTOR;
+    else if (strcmp(token, "CAPACITOR") == 0) g_ComponentList[g_LineIndex].Type = CAPACITOR;
+    else if (strcmp(token, "INDUCTOR") == 0)  g_ComponentList[g_LineIndex].Type = INDUCTOR;
     else {
         printf("Error: Unknown component type '%s'\n", token);
         exit(EXIT_FAILURE);
@@ -73,7 +75,7 @@ void MSNL_ParseLine(char *target_line) {
         printf("Failure, terminating program.\n");
         exit(EXIT_FAILURE);
     }
-    if (ComponentList[g_LineIndex].Type == ACTIVE) {
+    if (g_ComponentList[g_LineIndex].Type == ACTIVE) {
         // Separate function from parameters (Ex: "SIN" from "(5,100)")
         char *open_parentheses = strchr(token, '(');
         if (!open_parentheses) {
@@ -87,27 +89,27 @@ void MSNL_ParseLine(char *target_line) {
         char *FuncParamStr = open_parentheses + 1; // Now "5,100)"
 
         // Find parsed function name in lookup table
-        ComponentList[g_LineIndex].Value.ActiveFunction.ptr = NULL;
+        g_ComponentList[g_LineIndex].Value.ActiveFunction.ptr = NULL;
         int i = 0;
         for (i = 0; g_FunctionTable[i].FuncPtr != NULL; i++) {
             if (strcmp(g_FunctionTable[i].Name, FuncNameStr) == 0) {
-                ComponentList[g_LineIndex].Value.ActiveFunction.ptr = g_FunctionTable[i].FuncPtr;
+                g_ComponentList[g_LineIndex].Value.ActiveFunction.ptr = g_FunctionTable[i].FuncPtr;
                 break;
             }
         }
-        if (ComponentList[g_LineIndex].Value.ActiveFunction.ptr == NULL) {
+        if (g_ComponentList[g_LineIndex].Value.ActiveFunction.ptr == NULL) {
             printf("Error: Unknown active function '%s' on line %d.\n", FuncNameStr, g_LineIndex);
             exit(EXIT_FAILURE);
         }
-        ComponentList[g_LineIndex].Value.ActiveFunction.ParamsCount = 0;
+        g_ComponentList[g_LineIndex].Value.ActiveFunction.ParamsCount = 0;
         char *param_token = strtok(FuncParamStr, ",)"); // Delimit by comma or closing paren
         while (param_token != NULL) {
-            if (ComponentList[g_LineIndex].Value.ActiveFunction.ParamsCount >= MAX_NUM_PARAMS) {
+            if (g_ComponentList[g_LineIndex].Value.ActiveFunction.ParamsCount >= MAX_NUM_PARAMS) {
                 printf("Error: Too many parameters for function %s\n.", FuncNameStr);
                 exit(EXIT_FAILURE);
             }
-            ComponentList[g_LineIndex].Value.ActiveFunction.Params[ComponentList[g_LineIndex].Value.ActiveFunction.ParamsCount] = strtof(param_token, NULL);
-            ComponentList[g_LineIndex].Value.ActiveFunction.ParamsCount++;
+            g_ComponentList[g_LineIndex].Value.ActiveFunction.Params[g_ComponentList[g_LineIndex].Value.ActiveFunction.ParamsCount] = strtof(param_token, NULL);
+            g_ComponentList[g_LineIndex].Value.ActiveFunction.ParamsCount++;
             param_token = strtok(NULL, ",)");
         }
         } 
@@ -115,7 +117,7 @@ void MSNL_ParseLine(char *target_line) {
         // Parse float for RESISTOR, CAPACITOR, INDUCTOR
         char *endptr;
         // Give float literal to component nominal value
-        ComponentList[g_LineIndex].Value.Nominal = strtof(token, &endptr);     
+        g_ComponentList[g_LineIndex].Value.Nominal = strtof(token, &endptr);     
         // Fail if no number found (token == endptr)
         // Fail if characters remain that aren't just 'f' (e.g., "10Ohm" fails)
         if (token == endptr || (*endptr != '\0' && (*endptr != 'f' || *(endptr + 1) != '\0'))) {
@@ -127,12 +129,12 @@ void MSNL_ParseLine(char *target_line) {
     // Parse Positive Node
     token = strtok(NULL, delimiters);
     if (!token) return -1;
-    strncpy(ComponentList[g_LineIndex].NodePos, token, sizeof(ComponentList[g_LineIndex].NodePos) - 1);
+    strncpy(g_ComponentList[g_LineIndex].NodePos, token, sizeof(g_ComponentList[g_LineIndex].NodePos) - 1);
 
     // 5. Parse Negative Node
     token = strtok(NULL, delimiters);
     if (!token) return -1;
-    strncpy(ComponentList[g_LineIndex].NodeNeg, token, sizeof(ComponentList[g_LineIndex].NodeNeg) - 1);
+    strncpy(g_ComponentList[g_LineIndex].NodeNeg, token, sizeof(g_ComponentList[g_LineIndex].NodeNeg) - 1);
 */
 }
 

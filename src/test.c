@@ -9,7 +9,8 @@ int main(void) {
     }
     printf("Line before MSNL_ParseLine\n");
     MSNL_ParseLine(Lines[0].Data);
-    printf("Complete");
+    printf("Label: %s, Nominal Value: %f\n", g_ComponentList[0].Label, g_ComponentList[0].Value.Nominal);
+    printf("Complete\n");
     return 0;
 }
 
