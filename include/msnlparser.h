@@ -20,8 +20,9 @@ extern Line_t *g_Lines;
 extern Component_t *g_ComponentList;
 extern Node_t *g_NodeList;
 extern unsigned int g_NumNodesMax;
-extern unsigned int g_LineIndex;
 extern unsigned int g_NodeIndex;
+extern unsigned int g_LineIndex;
+extern unsigned int g_NumLines;
 
 // Max number of chars in component label before '\0'
 #ifndef MAX_LABEL_LENGTH

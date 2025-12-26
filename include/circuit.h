@@ -10,7 +10,7 @@ This file provides circuit structure elements such as wires and ground
     #define ANGULAR_FREQUENCY 1.0f
 #endif
 #define MAX_NUM_PARAMS 2
-#define MAX_NODE_LABEL_LENGTH 10
+#define MAX_LABEL_LENGTH 10
 /*
 Structs for circuits components
 */
@@ -34,19 +34,19 @@ union TypeValue {
 };
 
 typedef struct Component {
-    char Label[5];
+    char Label[MAX_LABEL_LENGTH];
     // Component type
     E_CompType Type;
     // Varying value
     union TypeValue Value;
     // Connected nodes
-    char PosNode[MAX_NODE_LABEL_LENGTH + 1];
-    char NegNode[MAX_NODE_LABEL_LENGTH + 1];
+    char PosNode[MAX_LABEL_LENGTH + 1];
+    char NegNode[MAX_LABEL_LENGTH + 1];
 } Component_t;
 
 // Holds pointers to connected components
 typedef struct Node {
-    char Label[MAX_NODE_LABEL_LENGTH + 1];
+    char Label[MAX_LABEL_LENGTH + 1];
     Component_t *Connections[3];  // Expand this with malloc/realloc later!
 } Node_t;
 #endif // Header define

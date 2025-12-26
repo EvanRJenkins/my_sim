@@ -7,6 +7,7 @@ Component_t *g_ComponentList = NULL;
 Node_t *g_NodeList = NULL;
 unsigned int g_NumNodesMax = 0;
 unsigned int g_NodeIndex = 0;
+unsigned int g_NumLines = 0;
 unsigned int g_LineIndex = 0;
 // Open file and read it, return ptr to Lines array
 void MSNL_ReadFile(const char *file_name_string) {
@@ -65,6 +66,7 @@ void MSNL_GetCircuitFromFile(const char *file_name_string) {
     g_NumNodesMax = g_LineIndex * 2;
     MSNL_MakeNodeList();
     // Guarantee that this gets reset
+    g_NumLines = g_LineIndex;
     g_LineIndex = 0;
 }
 
