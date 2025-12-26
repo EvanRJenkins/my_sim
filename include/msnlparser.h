@@ -16,10 +16,12 @@ typedef struct Line {
     char Data[MAX_LINE_LENGTH];
 } Line_t;
 // Globals to track line index
+extern Line_t *g_Lines;
 extern Component_t *g_ComponentList;
 extern Node_t *g_NodeList;
-extern unsigned int g_NumberOfNodes;
+extern unsigned int g_NumNodesMax;
 extern unsigned int g_LineIndex;
+extern unsigned int g_NodeIndex;
 
 // Max number of chars in component label before '\0'
 #ifndef MAX_LABEL_LENGTH
@@ -27,9 +29,13 @@ extern unsigned int g_LineIndex;
 #endif
 
 // Open file and read it
-Line_t *MSNL_ReadFile(const char *file_name_string);
+void MSNL_ReadFile(const char *file_name_string);
 // Allocate memory for global component list
 void MSNL_MakeComponentList();
+// Allocate memory for global component list
+void MSNL_MakeNodeList();
+// Consolidate previous functions
+void MSNL_GetCircuitFromFile(const char *target_file_string);
 // Make component from line description
 void MSNL_ParseLine(char *target_line);
 /*
