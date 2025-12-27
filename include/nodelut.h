@@ -19,5 +19,7 @@ extern LabelMapEntry_t *g_NodeTable;
 void NODELUT_MakeNodeTable();
 // FOR TESTING: PRINT ALL PAIRS IN NODE TABLE
 void NODELUT_PrintNodeTable();
+// Get corresponding character from map entry
+char NODELUT_GetChar(char *input_name);
 #endif
 

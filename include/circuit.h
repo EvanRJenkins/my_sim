@@ -63,8 +63,7 @@ typedef struct Branch {
     // Z = a + jb
     float a, b;
     // Nodes at either end of branch
-    char Node1[MAX_LABEL_LENGTH + 1];  // Hash map this later!
-    char Node2[MAX_LABEL_LENGTH + 1];
+    char Node1, Node2;
     // DC Behavior if AC component
     E_Behavior Behavior;
 } Branch_t;

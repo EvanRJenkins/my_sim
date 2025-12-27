@@ -1,5 +1,7 @@
 #include <math.h>
 #include "nodesolve.h"
+#include "nodelut.h"
+#include "functionlut.h"
 /*
 The functions in this file are responsible for converting
 the string format components from the msnl file parser into
@@ -55,8 +57,8 @@ void NODESOLVE_ComputeBranchImpedances() {
     for (i = 0; i < g_NumLines; i++) {
         // Change calculation depending on type
         debug();
-        strcpy(g_BranchList[i].Node1, g_ComponentList[i].PosNode);
-        strcpy(g_BranchList[i].Node2, g_ComponentList[i].NegNode);
+        g_BranchList[i].Node1 = NODELUT_GetChar(g_ComponentList[i].PosNode);
+        g_BranchList[i].Node2 = NODELUT_GetChar(g_ComponentList[i].NegNode);
         switch (g_ComponentList[i].Type) {
             case ACTIVE:
                 // Set source flag
@@ -111,11 +113,11 @@ void NODESOLVE_PrintAllBranchImpedances() {
         printf("\t%f %fj\n", g_BranchList[i].a, g_BranchList[i].b);
     }
 }
-// Populate node connections of each branch
+// FOR TESTING: PRINT NODE CONNECTIONS OF ALL BRANCHES
 void NODESOLVE_PrintAllBranchNodes() {
     int i = 0;
     printf("All branch nodes:\n");
     for (i = 0; i < g_NumLines; i++) {
-        printf("\tBranch %d Node1: %s, Branch %d Node2: %s\n", i, g_BranchList[i].Node1, i, g_BranchList[i].Node2);
+        printf("\tBranch %d Node1: %c, Branch %d Node2: %c\n", i, g_BranchList[i].Node1, i, g_BranchList[i].Node2);
     }
 }

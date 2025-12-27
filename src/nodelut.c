@@ -38,3 +38,18 @@ void NODELUT_PrintNodeTable() {
         printf("\t%s  |   %c\n", g_NodeTable[i].Name, g_NodeTable[i].Letter);
     }
 }
+// Return the char corresponding to the input string
+char NODELUT_GetChar(char *input_name) {
+    int i = 0;
+    // Iterate through table
+    for (i = 0; i < g_NumNodesUnique; i++) {
+        // Return the matching letter
+        if (!strcmp(input_name, g_NodeTable[i].Name)) {
+            return g_NodeTable[i].Letter;
+        }
+    }
+    // If no match is found, print error and exit
+    printf("Error: No valid NodeTable entry found, program terminated.\n");
+    exit(EXIT_FAILURE);
+    return 1;
+}

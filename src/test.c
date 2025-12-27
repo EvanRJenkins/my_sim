@@ -26,14 +26,14 @@ int main(void) {
     for (i = 0; i < g_NumNodesUnique; ++i) {
         NODESOLVE_PrintNodeConnections(&g_NodeList[i]);
     }
+    // nodelut.c test
+    NODELUT_MakeNodeTable();
+    NODELUT_PrintNodeTable();
     // nodesolve.c test
     NODESOLVE_MakeBranchList();
     NODESOLVE_ComputeBranchImpedances();
     NODESOLVE_PrintAllBranchImpedances();
     NODESOLVE_PrintAllBranchNodes();
-    // nodelut.c test
-    NODELUT_MakeNodeTable();
-    NODELUT_PrintNodeTable();
     // Free everything
     free(g_Lines);
     free(g_ComponentList);
