@@ -9,7 +9,7 @@
 Line type and definitions
 */
 #ifndef MAX_LINE_LENGTH
-    #define MAX_LINE_LENGTH 40
+    #define MAX_LINE_LENGTH 100
 #endif
 // Line struct type
 typedef struct Line {

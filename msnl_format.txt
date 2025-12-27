@@ -17,9 +17,9 @@ Any units given in a .msnl file will result in an error.
 
 Each line of a .msnl file describes an individual component.
 The proper way to describe an active component is, for example:
-	V1 ACTIVE SIN(5, 100) A GROUND
+	V1 ACTIVE SIN(5,100) A GROUND
 Below is a syntactically INCORRECT but more clear description:
-	Label: V1 Type: ACTIVE Value: SIN(Amplitude: 5, AngularFrequency: 100) Positive Node: A Negative Node: GROUND
+	Label: V1 Type: ACTIVE Value: SIN(Amplitude: 5,AngularFrequency: 100) Positive Node: A Negative Node: GROUND
 Here is an equivalent example for a passive component:
 	R1 PASSIVE 100.0f A GROUND
 	Label: R1 Type: PASSIVE Value: 100.0f PositiveNode: A NegativeNodeL GROUND

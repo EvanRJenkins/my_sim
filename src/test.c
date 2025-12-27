@@ -1,13 +1,24 @@
 #include "msnlparser.h"
 
+void PrintComponent(int index, Component_t *target) {
+    printf("Index: %d\t", index);
+    printf("Label: %s\t", target->Label);
+    printf("+Node: %s\t", target->PosNode);
+    printf("-Node: %s\n", target->NegNode);
+}
+/*
+void PrintNode(int index, Node_t *target) {
+    printf("Index: %d", index);
+    printf("Label: %s", target->Label);
+    printf("+Node: %s", target->);
+    printf("-Node: %s\n", target->);
+}
+*/
 int main(void) {
-    MSNL_GetCircuitFromFile("test.txt");
+    MSNL_GetCircuitFromFile("test2.txt");
     int i = 0;
     for (i = 0; i < g_NumLines; i++) {
-        printf("%s", g_Lines[i].Data);
-    }
-    for (i = 0; i < g_NumLines; i++) {
-        printf("Comp %d Label: %s \n", i, g_ComponentList[i].Label);
+        PrintComponent(i, &g_ComponentList[i]);
     }
     free(g_ComponentList);
     free(g_NodeList);

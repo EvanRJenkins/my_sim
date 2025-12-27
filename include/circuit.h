@@ -9,8 +9,8 @@ This file provides circuit structure elements such as wires and ground
 #ifndef ANGULAR_FREQUENCY
     #define ANGULAR_FREQUENCY 1.0f
 #endif
-#define MAX_NUM_PARAMS 2
-#define MAX_LABEL_LENGTH 3
+#define MAX_NUM_PARAMS 6
+#define MAX_LABEL_LENGTH 10
 /*
 Structs for circuits components
 */
