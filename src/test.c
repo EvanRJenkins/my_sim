@@ -6,11 +6,8 @@ int main(void) {
     for (i = 0; i < g_NumLines; i++) {
         printf("%s", g_Lines[i].Data);
     }
-    printf("Line before MSNL_ParseLine\n");
-    int j = 0;
-    for (j = 0; j < g_NumLines; j++) {
-        MSNL_ParseLine(g_Lines[j].Data);
-        printf("Comp j Label: %s \n", g_ComponentList[j].Label);
+    for (i = 0; i < g_NumLines; i++) {
+        printf("Comp %d Label: %s \n", i, g_ComponentList[i].Label);
     }
     free(g_ComponentList);
     free(g_NodeList);

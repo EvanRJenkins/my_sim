@@ -52,11 +52,11 @@ unsigned char MSNL_IsRepeatNode(char * node_label_string) {
     for (i = 0; i < (g_NumNodesMax); i++) {
         // Compare argument string to Label at current index
         if (strcmp(g_NodeList[i].Label, node_label_string)) {
-            return 1;
+            return 0;
         }
     }
-    // If no repeat, return 0
-    return 0;
+    // If no repeat, return 1
+    return 1;
 }
 
 void MSNL_GetCircuitFromFile(const char *file_name_string) {
