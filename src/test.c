@@ -34,6 +34,9 @@ int main(void) {
     NODESOLVE_ComputeBranchImpedances();
     NODESOLVE_PrintAllBranchImpedances();
     NODESOLVE_PrintAllBranchNodes();
+    NODESOLVE_MakeNodeMatrix(); 
+    NODESOLVE_PopulateNodeMatrix();
+    NODESOLVE_PrintNodeMatrix();
     // Free everything
     free(g_Lines);
     free(g_ComponentList);

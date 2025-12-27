@@ -9,6 +9,18 @@ a "circuit" that can be solved mathematically with nodal analysis.
 */
 Branch_t *g_BranchList = NULL;
 int g_BranchIndex = 0;
+/*
+FOR REFERENCE
+typdef struct {
+    // Real and imaginary parts (Z = a + jb)
+    float a, b;
+} ZNum_t;
+*/
+// This points to an element of the row
+ZNum_t *g_NodeMatrixCol = NULL;
+// This points to an array (row)
+ZNumRow_t *g_NodeMatrixRow = NULL;
+
 // STEP 1: IDENTIFY NODES
 void NODESOLVE_MapNodeConnections() {
     int i = 0;
@@ -53,10 +65,8 @@ void NODESOLVE_ComputeBranchImpedances() {
     // For each component (line), calc impedance if passive
     int i = 0;
     printf("g_NumLines: %d", g_NumLines);
-    debug();
     for (i = 0; i < g_NumLines; i++) {
         // Change calculation depending on type
-        debug();
         g_BranchList[i].Node1 = NODELUT_GetChar(g_ComponentList[i].PosNode);
         g_BranchList[i].Node2 = NODELUT_GetChar(g_ComponentList[i].NegNode);
         switch (g_ComponentList[i].Type) {
@@ -119,5 +129,43 @@ void NODESOLVE_PrintAllBranchNodes() {
     printf("All branch nodes:\n");
     for (i = 0; i < g_NumLines; i++) {
         printf("\tBranch %d Node1: %c, Branch %d Node2: %c\n", i, g_BranchList[i].Node1, i, g_BranchList[i].Node2);
+    }
+}
+// Matrix for KCL setup
+void NODESOLVE_MakeNodeMatrix() {
+    // Allocate memory for each row, 1 per node
+    g_NodeMatrixRow = (ZNumRow_t *) calloc((g_NumNodesUnique), sizeof(ZNumRow_t));
+    int i = 0;
+    // Allocate elements for each row
+    for (i = 0; i < g_NumNodesUnique; ++i) {
+        g_NodeMatrixRow[i].Element = (ZNum_t *) calloc(g_NumNodesUnique, sizeof(ZNum_t));
+    }
+}
+
+// Put impedance values in Node Matrix
+void NODESOLVE_PopulateNodeMatrix() {
+    // Iterate through row and assign values
+    int i = 0;
+    int j = 0;
+    for (i = 0; i < g_NumNodesUnique; i++) {
+        debug();
+        for (j = 0; j < g_NumNodesUnique; j++) {
+            g_NodeMatrixRow[i].Element[j].a = 2.5f;
+            g_NodeMatrixRow[i].Element[j].b = -1.0f;
+        }
+    }
+}
+
+// FOR TESTING: PRINT ALL ELEMENTS OF NODE MATRIX
+void NODESOLVE_PrintNodeMatrix() {
+    int i = 0;
+    int j = 0;
+    printf("\tNode Matrix: \n");
+    for (i = 0; i < g_NumNodesUnique; i++) {
+        for (j = 0; j < g_NumNodesUnique; j++) {
+            printf("%f ", g_NodeMatrixRow[i].Element[j].a);
+            printf("%f \t", g_NodeMatrixRow[i].Element[j].b);
+        }
+        printf("\n");
     }
 }
