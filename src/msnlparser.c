@@ -72,7 +72,6 @@ void MSNL_GetCircuitFromFile(const char *file_name_string) {
     MSNL_MakeComponentList();
     g_NumNodesMax = g_NumLines * 2;
     MSNL_MakeNodeList();
-    g_NumLines = g_NumLines;
     // Guarantee that this gets reset
     for (g_LineIndex = 0; g_LineIndex < g_NumLines; g_LineIndex++) {
         MSNL_ParseLine(g_Lines[g_LineIndex].Data);

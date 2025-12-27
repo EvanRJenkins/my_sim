@@ -21,6 +21,11 @@ typedef enum {
     CAPACITOR, 
     INDUCTOR
 } E_CompType;
+typedef enum {
+    NONE,
+    SHORT_CIRCUIT,
+    INFINITE_Z
+} E_DCBehavior;
 // For holding active function information
 typedef struct ActiveFunctionInfo {
     float (*ptr)(float, float *);
@@ -51,4 +56,12 @@ typedef struct Node {
     Component_t *Connections[MAX_NUM_CONNECTIONS];  // Expand this with malloc/realloc later!
     int NumConnections;
 } Node_t;
+
+// Holds impedance between nodes after component conversion
+typedef struct Branch {
+    // Z = a + jb
+    float a, b;
+    // DC Behavior if AC component
+    E_DCBehavior DCBehavior;
+} Branch_t;
 #endif // Header define

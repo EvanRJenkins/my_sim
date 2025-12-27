@@ -26,9 +26,14 @@ int main(void) {
     for (i = 0; i < g_NumNodesUnique; ++i) {
         NODESOLVE_PrintNodeConnections(&g_NodeList[i]);
     }
+    NODESOLVE_MakeBranchList();
+    NODESOLVE_ComputeBranchImpedances();
+    NODESOLVE_PrintAllBranchImpedances();
+    // Free everything
+    free(g_Lines);
     free(g_ComponentList);
     free(g_NodeList);
-    free(g_Lines);
+    free(g_BranchList);
     printf("Complete\n");
     return 0;
 }
