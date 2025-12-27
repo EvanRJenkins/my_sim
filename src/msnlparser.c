@@ -137,15 +137,30 @@ void MSNL_ParseLine(char *target_line) {
             exit(EXIT_FAILURE);
         }
         g_ComponentList[g_LineIndex].Value.ActiveFunction.ParamsCount = 0;
-        char *param_token = strtok(FuncParamStr, ",)"); // Delimit by comma or closing paren
-        while (param_token != NULL) {
+        char *cursor = FuncParamStr; // Use a cursor to walk the string
+        char *endptr = NULL;
+
+        // Loop until closing parentheses or end of string
+        while (*cursor != '\0' && *cursor != ')') {
+    
             if (g_ComponentList[g_LineIndex].Value.ActiveFunction.ParamsCount >= MAX_NUM_PARAMS) {
                 printf("Error: Too many parameters for function %s\n.", FuncNameStr);
-                exit(EXIT_FAILURE);
+            exit(EXIT_FAILURE);
             }
-            g_ComponentList[g_LineIndex].Value.ActiveFunction.Params[g_ComponentList[g_LineIndex].Value.ActiveFunction.ParamsCount] = strtof(param_token, NULL);
+
+            // strtof parses the float and sets endptr to the character immediately following the number
+            g_ComponentList[g_LineIndex].Value.ActiveFunction.Params[g_ComponentList[g_LineIndex].Value.ActiveFunction.ParamsCount] = strtof(cursor, &endptr);
+            // If no conversion, prevent infinite loop
+            if (cursor == endptr) {
+                break; 
+            }
             g_ComponentList[g_LineIndex].Value.ActiveFunction.ParamsCount++;
-            param_token = strtok(NULL, ",)");
+            // Advance cursor to the end of the number we just parsed
+            cursor = endptr;
+            // Skip the comma if the next character is one
+            if (*cursor == ',') {
+                cursor++;
+            }
         }
     } 
     else {
@@ -162,11 +177,8 @@ void MSNL_ParseLine(char *target_line) {
     }
     // Parse Positive Node
     token = strtok(NULL, delimiters);
-    printf("PosNodeToken: %s\n", token);
-    debug();
     if (!token) {
         printf("Failed to parse positive node, terminating program.\n");
-        debug();
         exit(EXIT_FAILURE);
     }
     strncpy(g_ComponentList[g_LineIndex].PosNode, token, sizeof(g_ComponentList[g_LineIndex].PosNode) - 1);
@@ -179,8 +191,6 @@ void MSNL_ParseLine(char *target_line) {
     }
     // Parse Negative Node
     token = strtok(NULL, delimiters);
-    printf("NegNode Token: %s\n", token);
-    debug();
 
     if (!token) {
         printf("Failed to parse negative node, terminating program.\n");
@@ -193,8 +203,4 @@ void MSNL_ParseLine(char *target_line) {
         // Increment index
         g_NodeIndex++;
     }
-}
-
-void debug() {
-return;
 }
