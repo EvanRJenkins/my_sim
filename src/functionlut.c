@@ -1,7 +1,7 @@
-#include "functiontable.h"
+#include "functionlut.h"
 
 // Function table declaration
-FunctionMapping_t g_FunctionTable[] = {
+FunctionMap_t g_FunctionTable[] = {
     { "SIN",    func_SIN },
     { "SQUARE", func_SQUARE },
     { "PULSE",  func_PULSE },

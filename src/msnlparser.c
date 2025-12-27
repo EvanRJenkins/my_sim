@@ -1,5 +1,5 @@
 #include "msnlparser.h"
-#include "functiontable.h"
+#include "functionlut.h"
 // Declared extern in .h
 // Array of all components in circuit
 Line_t *g_Lines = NULL;

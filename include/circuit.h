@@ -4,7 +4,7 @@
 This file provides circuit structure elements such as wires and ground
 */
 #include <stdlib.h>
-#include <stdint.h>
+#include <stdio.h>
 // For functions to work if not defined
 #ifndef ANGULAR_FREQUENCY
     #define ANGULAR_FREQUENCY 1.0f
