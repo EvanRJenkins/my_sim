@@ -23,9 +23,10 @@ typedef enum {
 } E_CompType;
 typedef enum {
     NONE,
+    SOURCE,
     SHORT_CIRCUIT,
     INFINITE_Z
-} E_DCBehavior;
+} E_Behavior;
 // For holding active function information
 typedef struct ActiveFunctionInfo {
     float (*ptr)(float, float *);
@@ -61,7 +62,10 @@ typedef struct Node {
 typedef struct Branch {
     // Z = a + jb
     float a, b;
+    // Nodes at either end of branch
+    char Node1[MAX_LABEL_LENGTH + 1];  // Hash map this later!
+    char Node2[MAX_LABEL_LENGTH + 1];
     // DC Behavior if AC component
-    E_DCBehavior DCBehavior;
+    E_Behavior Behavior;
 } Branch_t;
 #endif // Header define

@@ -55,16 +55,18 @@ void NODESOLVE_ComputeBranchImpedances() {
     for (i = 0; i < g_NumLines; i++) {
         // Change calculation depending on type
         debug();
-
+        strcpy(g_BranchList[i].Node1, g_ComponentList[i].PosNode);
+        strcpy(g_BranchList[i].Node2, g_ComponentList[i].NegNode);
         switch (g_ComponentList[i].Type) {
             case ACTIVE:
-                // Do nothing
+                // Set source flag
+                g_BranchList[g_BranchIndex].Behavior = SOURCE;
                 break;
             case RESISTOR:
                 // Z = R
                 g_BranchList[g_BranchIndex].a = g_ComponentList[i].Value.Nominal;
                 g_BranchList[g_BranchIndex].b = 0.0f;
-                g_BranchList[g_BranchIndex].DCBehavior = NONE;
+                g_BranchList[g_BranchIndex].Behavior = NONE;
                 // Increment index of branch list, doesn't track i
                 g_BranchIndex++;
                 break;
@@ -74,7 +76,7 @@ void NODESOLVE_ComputeBranchImpedances() {
                 if ((g_ComponentList[i].Value.Nominal == 0) || (ANGULAR_FREQUENCY == 0)) {
                     g_BranchList[g_BranchIndex].b = 0.0f;
                     // Set status indicator
-                    g_BranchList[g_BranchIndex].DCBehavior = INFINITE_Z;
+                    g_BranchList[g_BranchIndex].Behavior = INFINITE_Z;
                 }
                 else {
                     // Else, current is AC, do normal calculation
@@ -88,7 +90,7 @@ void NODESOLVE_ComputeBranchImpedances() {
                 if ((g_ComponentList[i].Value.Nominal == 0) || (ANGULAR_FREQUENCY == 0)) {
                     g_BranchList[g_BranchIndex].b = 0.0f;
                     // Set DC status indicator
-                    g_BranchList[g_BranchIndex].DCBehavior = SHORT_CIRCUIT;
+                    g_BranchList[g_BranchIndex].Behavior = SHORT_CIRCUIT;
                 }
                 else {
                     // Else, current is AC, do normal calculation
@@ -107,5 +109,13 @@ void NODESOLVE_PrintAllBranchImpedances() {
     printf("All branch impedances:\n");
     for (i = 0; i < g_NumLines; i++) {
         printf("\t%f %fj\n", g_BranchList[i].a, g_BranchList[i].b);
+    }
+}
+// Populate node connections of each branch
+void NODESOLVE_PrintAllBranchNodes() {
+    int i = 0;
+    printf("All branch nodes:\n");
+    for (i = 0; i < g_NumLines; i++) {
+        printf("\tBranch %d Node1: %s, Branch %d Node2: %s\n", i, g_BranchList[i].Node1, i, g_BranchList[i].Node2);
     }
 }

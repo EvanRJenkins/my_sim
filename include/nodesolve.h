@@ -11,7 +11,7 @@ void NODESOLVE_PrintNodeConnections(Node_t *target);
 void NODESOLVE_MakeBranchList();
 void NODESOLVE_ComputeBranchImpedances();
 void NODESOLVE_PrintAllBranchImpedances();
-
+void NODESOLVE_PrintAllBranchNodes();
 
 
 

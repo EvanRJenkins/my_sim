@@ -29,6 +29,7 @@ int main(void) {
     NODESOLVE_MakeBranchList();
     NODESOLVE_ComputeBranchImpedances();
     NODESOLVE_PrintAllBranchImpedances();
+    NODESOLVE_PrintAllBranchNodes();
     // Free everything
     free(g_Lines);
     free(g_ComponentList);
