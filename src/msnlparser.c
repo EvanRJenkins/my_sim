@@ -147,7 +147,7 @@ void MSNL_ParseLine(char *target_line) {
             g_ComponentList[g_LineIndex].Value.ActiveFunction.ParamsCount++;
             param_token = strtok(NULL, ",)");
         }
-        } 
+    } 
     else {
         // Parse float for RESISTOR, CAPACITOR, INDUCTOR
         char *endptr;
@@ -162,6 +162,8 @@ void MSNL_ParseLine(char *target_line) {
     }
     // Parse Positive Node
     token = strtok(NULL, delimiters);
+    printf("PosNodeToken: %s\n", token);
+    debug();
     if (!token) {
         printf("Failed to parse positive node, terminating program.\n");
         debug();
@@ -177,6 +179,9 @@ void MSNL_ParseLine(char *target_line) {
     }
     // Parse Negative Node
     token = strtok(NULL, delimiters);
+    printf("NegNode Token: %s\n", token);
+    debug();
+
     if (!token) {
         printf("Failed to parse negative node, terminating program.\n");
         exit(EXIT_FAILURE);
