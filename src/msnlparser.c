@@ -6,9 +6,14 @@ Line_t *g_Lines = NULL;
 Component_t *g_ComponentList = NULL;
 Node_t *g_NodeList = NULL;
 int g_NumNodesMax = 0;
+int g_NumNodesUnique = 0;
 int g_NodeIndex = 0;
 int g_NumLines = 0;
 int g_LineIndex = 0;
+
+void debug() {
+    return;
+}
 // Open file and read it, return ptr to Lines array
 void MSNL_ReadFile(const char *file_name_string) {
     // Open the file in read mode
@@ -46,17 +51,19 @@ void MSNL_MakeNodeList() {
     g_NodeList = (Node_t *) calloc(g_NumNodesMax, sizeof(Node_t));
 }
 // Check if parsed node name already found or not
-unsigned char MSNL_IsRepeatNode(char * node_label_string) {
-    unsigned char i;
+int MSNL_IsRepeatNode(char * node_label_string) {
+    int i;
     // Iterate until a repeat is found
-    for (i = 0; i < (g_NumNodesMax); i++) {
+    for (i = 0; i < g_NumNodesMax; i++) {
         // Compare argument string to Label at current index
-        if (strcmp(g_NodeList[i].Label, node_label_string)) {
-            return 0;
+        if (!strncmp(g_NodeList[i].Label, node_label_string, (MAX_LABEL_LENGTH))) {
+            // If repeat is found, return 1
+            return 1;
         }
     }
-    // If no repeat, return 1
-    return 1;
+    // If no repeat, increment NumNodesUnique and return 1
+    g_NumNodesUnique++;
+    return 0;
 }
 
 void MSNL_GetCircuitFromFile(const char *file_name_string) {
@@ -185,7 +192,7 @@ void MSNL_ParseLine(char *target_line) {
     // If node isn't a repeat, add it to the NodeList
     if (!MSNL_IsRepeatNode(token)) {
         // Add to list
-        strncpy(g_NodeList[g_NodeIndex].Label, token, sizeof(g_ComponentList[g_NodeIndex].Label) - 1);
+        strncpy(g_NodeList[g_NodeIndex].Label, token, sizeof(g_ComponentList[g_NodeIndex].PosNode) - 1);
         // Increment index
         g_NodeIndex++;
     }
@@ -199,7 +206,7 @@ void MSNL_ParseLine(char *target_line) {
     strncpy(g_ComponentList[g_LineIndex].NegNode, token, sizeof(g_ComponentList[g_LineIndex].NegNode) - 1);
     if (!MSNL_IsRepeatNode(token)) {
         // Add to list
-        strncpy(g_NodeList[g_NodeIndex].Label, token, sizeof(g_ComponentList[g_NodeIndex].Label) - 1);
+        strncpy(g_NodeList[g_NodeIndex].Label, token, sizeof(g_ComponentList[g_NodeIndex].NegNode) - 1);
         // Increment index
         g_NodeIndex++;
     }

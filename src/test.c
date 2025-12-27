@@ -20,6 +20,7 @@ int main(void) {
     for (i = 0; i < g_NumLines; i++) {
         PrintComponent(i, &g_ComponentList[i]);
     }
+    printf("%d\n", g_NumNodesUnique);
     free(g_ComponentList);
     free(g_NodeList);
     free(g_Lines);

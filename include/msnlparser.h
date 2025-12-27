@@ -20,6 +20,7 @@ extern Line_t *g_Lines;
 extern Component_t *g_ComponentList;
 extern Node_t *g_NodeList;
 extern int g_NumNodesMax;
+extern int g_NumNodesUnique;
 extern int g_NodeIndex;
 extern int g_LineIndex;
 extern int g_NumLines;
@@ -31,6 +32,8 @@ void MSNL_ReadFile(const char *file_name_string);
 void MSNL_MakeComponentList();
 // Allocate memory for global component list
 void MSNL_MakeNodeList();
+// Check for repeat
+int MSNL_IsRepeatNode(char * node_label_string);
 // Consolidate previous functions
 void MSNL_GetCircuitFromFile(const char *target_file_string);
 // Make component from line description
