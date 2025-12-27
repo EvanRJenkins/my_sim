@@ -11,6 +11,7 @@ This file provides circuit structure elements such as wires and ground
 #endif
 #define MAX_NUM_PARAMS 6
 #define MAX_LABEL_LENGTH 10
+#define MAX_NUM_CONNECTIONS 10
 /*
 Structs for circuits components
 */
@@ -47,6 +48,7 @@ typedef struct Component {
 // Holds pointers to connected components
 typedef struct Node {
     char Label[MAX_LABEL_LENGTH + 1];
-    Component_t *Connections[3];  // Expand this with malloc/realloc later!
+    Component_t *Connections[MAX_NUM_CONNECTIONS];  // Expand this with malloc/realloc later!
+    int NumConnections;
 } Node_t;
 #endif // Header define

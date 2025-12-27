@@ -1,4 +1,4 @@
-#include "msnlparser.h"
+#include "nodesolve.h"
 
 void PrintComponent(int index, Component_t *target) {
     printf("Index: %d\t", index);
@@ -16,11 +16,16 @@ void PrintNode(int index, Node_t *target) {
 */
 int main(void) {
     MSNL_GetCircuitFromFile("test2.txt");
+    printf("Found %d unique nodes...\n", g_NumNodesUnique);
+    NODESOLVE_MapNodeConnections();
+    printf("Successfully mapped node connections.\n");
     int i = 0;
     for (i = 0; i < g_NumLines; i++) {
         PrintComponent(i, &g_ComponentList[i]);
     }
-    printf("%d\n", g_NumNodesUnique);
+    for (i = 0; i < g_NumNodesUnique; ++i) {
+        NODESOLVE_PrintNodeConnections(&g_NodeList[i]);
+    }
     free(g_ComponentList);
     free(g_NodeList);
     free(g_Lines);
