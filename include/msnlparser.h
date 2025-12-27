@@ -9,7 +9,7 @@
 Line type and definitions
 */
 #ifndef MAX_LINE_LENGTH
-    #define MAX_LINE_LENGTH 100
+    #define MAX_LINE_LENGTH 40
 #endif
 // Line struct type
 typedef struct Line {
@@ -19,16 +19,12 @@ typedef struct Line {
 extern Line_t *g_Lines;
 extern Component_t *g_ComponentList;
 extern Node_t *g_NodeList;
-extern unsigned int g_NumNodesMax;
-extern unsigned int g_NodeIndex;
-extern unsigned int g_LineIndex;
-extern unsigned int g_NumLines;
+extern int g_NumNodesMax;
+extern int g_NodeIndex;
+extern int g_LineIndex;
+extern int g_NumLines;
 
-// Max number of chars in component label before '\0'
-#ifndef MAX_LABEL_LENGTH
-    #define MAX_LABEL_LENGTH 2
-#endif
-
+void debug();
 // Open file and read it
 void MSNL_ReadFile(const char *file_name_string);
 // Allocate memory for global component list

@@ -5,10 +5,10 @@
 Line_t *g_Lines = NULL;
 Component_t *g_ComponentList = NULL;
 Node_t *g_NodeList = NULL;
-unsigned int g_NumNodesMax = 0;
-unsigned int g_NodeIndex = 0;
-unsigned int g_NumLines = 0;
-unsigned int g_LineIndex = 0;
+int g_NumNodesMax = 0;
+int g_NodeIndex = 0;
+int g_NumLines = 0;
+int g_LineIndex = 0;
 // Open file and read it, return ptr to Lines array
 void MSNL_ReadFile(const char *file_name_string) {
     // Open the file in read mode
@@ -20,15 +20,15 @@ void MSNL_ReadFile(const char *file_name_string) {
     }
     // Count lines in file
     char c;
-    unsigned int count = 0;
+    int count = 0;
     for (c = fgetc(fptr); c != EOF; c = fgetc(fptr)) if (c == '\n') count++;
-    // Assign number of lines counted to global line index
-    g_LineIndex = count;
+    // Assign number of lines counted to global num lines
+    g_NumLines = count;
     // Allocate Lines array
-    g_Lines = (Line_t *) malloc(sizeof(Line_t) * g_LineIndex);
+    g_Lines = (Line_t *) calloc(g_NumLines, sizeof(Line_t));
     // Reset read ptr
     rewind(fptr);
-    for (count = 0; count < g_LineIndex; ++count) {
+    for (count = 0; count < g_NumLines; ++count) {
         // Access the array at index [count], then the .Data member
         fgets(g_Lines[count].Data, MAX_LINE_LENGTH, fptr);
     }
@@ -37,13 +37,13 @@ void MSNL_ReadFile(const char *file_name_string) {
 }
 // Make list of all components in circuit
 void MSNL_MakeComponentList() { 
-    g_ComponentList = (Component_t *) malloc(sizeof(Component_t) * g_LineIndex);
+    g_ComponentList = (Component_t *) calloc(g_NumLines, sizeof(Component_t));
 }
 
 // Make list of all nodes in circuit
 void MSNL_MakeNodeList() {
     // Temporary solution, 2x nodes per component should be more than enough
-    g_NodeList = (Node_t *) malloc(sizeof(Node_t) * g_NumNodesMax);
+    g_NodeList = (Node_t *) calloc(g_NumNodesMax, sizeof(Node_t));
 }
 // Check if parsed node name already found or not
 unsigned char MSNL_IsRepeatNode(char * node_label_string) {
@@ -63,11 +63,13 @@ void MSNL_GetCircuitFromFile(const char *file_name_string) {
     // Consolidate previous functions
     MSNL_ReadFile(file_name_string);
     MSNL_MakeComponentList();
-    g_NumNodesMax = g_LineIndex * 2;
+    g_NumNodesMax = g_NumLines * 2;
     MSNL_MakeNodeList();
+    g_NumLines = g_NumLines;
     // Guarantee that this gets reset
-    g_NumLines = g_LineIndex;
-    g_LineIndex = 0;
+    for (g_LineIndex = 0; g_LineIndex < g_NumLines; g_LineIndex++) {
+        MSNL_ParseLine(g_Lines[g_LineIndex].Data);
+    }
 }
 
 // Parse lines
@@ -90,7 +92,7 @@ void MSNL_ParseLine(char *target_line) {
     // Get Type ("ACTIVE", "RESISTOR", ...)
     token = strtok(NULL, delimiters);
     if (!token) {
-        printf("Failure, terminating program.\n");
+        printf("Failed to parse component type, terminating program.\n");
         exit(EXIT_FAILURE);
     }
     if (strcmp(token, "ACTIVE") == 0)         g_ComponentList[g_LineIndex].Type = ACTIVE;
@@ -105,7 +107,7 @@ void MSNL_ParseLine(char *target_line) {
     // Get Value (function ptr for active, else float literal)
     token = strtok(NULL, delimiters); // Contains "SIN(5,100)" or "100.0f"
     if (!token) {
-        printf("Failure, terminating program.\n");
+        printf("Failed to parse component value, terminating program.\n");
         exit(EXIT_FAILURE);
     }
     if (g_ComponentList[g_LineIndex].Type == ACTIVE) {
@@ -152,7 +154,7 @@ void MSNL_ParseLine(char *target_line) {
         // Give float literal to component nominal value
         g_ComponentList[g_LineIndex].Value.Nominal = strtof(token, &endptr);     
         // Fail if no number found (token == endptr)
-        // Fail if characters remain that aren't just 'f' (e.g., "10Ohm" fails)
+        // Fail if characters remain that aren't just 'f'
         if (token == endptr || (*endptr != '\0' && (*endptr != 'f' || *(endptr + 1) != '\0'))) {
             printf("Error: Invalid value '%s'. Units are not allowed.\n", token);
             exit(EXIT_FAILURE);
@@ -161,7 +163,8 @@ void MSNL_ParseLine(char *target_line) {
     // Parse Positive Node
     token = strtok(NULL, delimiters);
     if (!token) {
-        printf("Failure, terminating program.\n");
+        printf("Failed to parse positive node, terminating program.\n");
+        debug();
         exit(EXIT_FAILURE);
     }
     strncpy(g_ComponentList[g_LineIndex].PosNode, token, sizeof(g_ComponentList[g_LineIndex].PosNode) - 1);
@@ -175,7 +178,7 @@ void MSNL_ParseLine(char *target_line) {
     // Parse Negative Node
     token = strtok(NULL, delimiters);
     if (!token) {
-        printf("Failure, terminating program.\n");
+        printf("Failed to parse negative node, terminating program.\n");
         exit(EXIT_FAILURE);
     }    
     strncpy(g_ComponentList[g_LineIndex].NegNode, token, sizeof(g_ComponentList[g_LineIndex].NegNode) - 1);
@@ -187,3 +190,6 @@ void MSNL_ParseLine(char *target_line) {
     }
 }
 
+void debug() {
+return;
+}

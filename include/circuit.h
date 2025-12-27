@@ -10,7 +10,7 @@ This file provides circuit structure elements such as wires and ground
     #define ANGULAR_FREQUENCY 1.0f
 #endif
 #define MAX_NUM_PARAMS 2
-#define MAX_LABEL_LENGTH 10
+#define MAX_LABEL_LENGTH 3
 /*
 Structs for circuits components
 */
@@ -24,7 +24,7 @@ typedef enum {
 typedef struct ActiveFunctionInfo {
     float (*ptr)(float, float *);
     char Params[MAX_NUM_PARAMS + 1];
-    unsigned char ParamsCount;
+    int ParamsCount;
 } ActiveFunction;
 
 // For changing component value with type
